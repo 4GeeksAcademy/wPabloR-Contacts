@@ -9,8 +9,7 @@ const Main = () => {
     return (
         <React.StrictMode>  
             <StoreProvider> 
-                <RouterProvider router={router}>
-                </RouterProvider>
+                <RouterProvider router={router}/>
             </StoreProvider>
         </React.StrictMode>
     );

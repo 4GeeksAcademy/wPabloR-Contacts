@@ -36,13 +36,6 @@ export const Home = () => {
 
 	return (
 		<div className="container py-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="text-start">Contact List</h2>
-        <Link to="/demo" className="btn btn-success">
-          ➕ Add New Contact
-        </Link>
-      </div>
-
       {store.contacts.length === 0 ? (
         <p className="text-center text-muted">No contacts yet</p>
       ) : (
