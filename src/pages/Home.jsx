@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
 
   const {store, dispatch} =useGlobalReducer()
+  const navigate = useNavigate()
 
   useEffect(()=>{
 	fetch("https://playground.4geeks.com/contact/agendas/ronaldo/contacts")
@@ -72,7 +73,10 @@ export const Home = () => {
                 >
                   🗑️
                 </button>
-                <button className="btn btn-sm btn-outline-primary">
+                <button 
+				className="btn btn-sm btn-outline-primary"
+				onClick={()=>navigate(`single/${contact.id}`)}
+				>
                   ✏️
                 </button>
               </div>
@@ -83,17 +87,3 @@ export const Home = () => {
     </div>
 	);
 }; 
-	// 	<div className="text-center mt-5">
-	// 	<div className="list-group">
-    //     {store && store.contacts.map((item) => {
-    //       return (
-    //         <div key={item.id}> 
-	// 		<h3>Name: {item.name}</h3>
-	// 		<p>ID: {item.id}</p>
-	// 		<p>Phone: {item.phone} </p>
-    //           <button onClick={() => deleteContact(item.id)}>Delete</button>
-	// 		</div>
-    //       );
-    //     })}
-    //   </div>
-	// 	</div>

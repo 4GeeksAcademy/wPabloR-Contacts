@@ -1,7 +1,7 @@
 export const initialStore = () => {
   return {
     contacts: [],
-    newContact: {
+    emptyContact: {
       name: "",
       email: "",
       phone: "",
@@ -35,7 +35,7 @@ export default function storeReducer(store, action = {}) {
         return {
           ...store,
           contacts: [...store.contacts, newContact],
-          newContact:  { name: "", email: "", phone: "", address: "" }
+          emptyContact:  { name: "", email: "", phone: "", address: "" }
 
         }
       }
@@ -45,10 +45,29 @@ export default function storeReducer(store, action = {}) {
 
         return{
           ...store,
-          newContact: {
-            ...store.newContact,
+          emptyContact: {
+            ...store.emptyContact,
             [name] : value
           }
+        }
+      }
+
+      case 'set_edit_contact':{
+        return{
+          ...store,
+          emptyContact: action.payload
+        }
+      }
+
+      case 'edit_contact':{
+        const {editedContact} = action.payload
+
+        return {
+          ...store,
+          contacts: store.contacts.map(contact => 
+            contact.id === editedContact.id ? editedContact : contact
+          ),
+          emptyContact:  { name: "", email: "", phone: "", address: "" }
         }
       }
 

@@ -1,37 +1,92 @@
-// Import necessary hooks and components from react-router-dom and other libraries.
-import { Link, useParams } from "react-router-dom";  // To use link for navigation and useParams to get URL parameters
-import PropTypes from "prop-types";  // To define prop types for this component
-import rigoImageUrl from "../assets/img/rigo-baby.jpg"  // Import an image asset
-import useGlobalReducer from "../hooks/useGlobalReducer";  // Import a custom hook for accessing the global state
 
-// Define and export the Single component which displays individual item details.
-export const Single = props => {
-  // Access the global state using the custom hook.
-  const { store } = useGlobalReducer()
+import { Link, useParams } from "react-router-dom";
+import PropTypes from "prop-types";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-  // Retrieve the 'theId' URL parameter using useParams hook.
+
+export const Single = () => {
+
+  const { store, dispatch } = useGlobalReducer()
+  const navigate = useNavigate()
+
   const { theId } = useParams()
-  const singleTodo = store.todos.find(todo => todo.id === parseInt(theId));
+  const singleContact = store.contacts.find(contact => contact.id === parseInt(theId));
+
+  useEffect(() => {
+    if(singleContact){
+      dispatch({
+        type: 'set_edit_contact',
+        payload: singleContact
+      })
+    }
+  }, [singleContact])
+
+  const handleInput = (e) => {
+    const {name, value } = e.target;
+    dispatch({
+      type: 'manage_input',
+      payload: {name, value}
+    })
+  }
+
+  const editContact = (e) => {
+    e.preventDefault();
+
+    fetch(`https://playground.4geeks.com/contact/agendas/ronaldo/contacts/${theId}`, {
+      method: 'PUT',
+      body: JSON.stringify(store.emptyContact),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        dispatch({
+          type: 'edit_contact',
+          payload: { editedContact: data }
+        });
+        navigate("/")
+      })
+      .catch(error => console.error("Error editando contacto", error))
+  }
 
   return (
-    <div className="container text-center">
-      {/* Display the title of the todo element dynamically retrieved from the store using theId. */}
-      <h1 className="display-4">Todo: {singleTodo?.title}</h1>
-      <hr className="my-4" />  {/* A horizontal rule for visual separation. */}
+    <div className="container py-4">
+      <h1 className="ms-2 fw-bold">Add a new contact</h1>
+      <form action="" onSubmit={editContact} className="border rounded-3 p-3 mt-4 shadow-sm bg-light">
+        <div className="mb-2">
+          <label className="form-label" htmlFor="name">Full Name</label>
+          <input className="form-control" type="text" placeholder="Full Name" name="name" id="name" value={store.emptyContact.name} onChange={handleInput} />
+        </div>
 
-      {/* A Link component acts as an anchor tag but is used for client-side routing to prevent page reloads. */}
-      <Link to="/">
-        <span className="btn btn-primary btn-lg" href="#" role="button">
-          Back home
-        </span>
-      </Link>
+        <div className="mb-2">
+          <label className="form-label" htmlFor="email">Email</label>
+          <input className="form-control" type="text" placeholder="Enter email" name="email" id="email" value={store.emptyContact.email} onChange={handleInput} />
+        </div>
+
+        <div className="mb-2">
+          <label className="form-label" htmlFor="phone">Phone</label>
+          <input className="form-control" type="text" placeholder="Enter phone" name="phone" id="phone" value={store.emptyContact.phone} onChange={handleInput} />
+        </div>
+
+        <div className="mb-0">
+          <label className="form-label" htmlFor="address">Adress</label>
+          <input className="form-control" type="text" placeholder="Enter address" name="address" id="address" value={store.emptyContact.address} onChange={handleInput} />
+        </div>
+
+        <div className="mt-4">
+          <button className="btn btn-primary me-4" style={{ width: "200px" }}>Save</button>
+          <button className="btn btn-danger" type="button" style={{ width: "200px" }} onClick={() => navigate("/")}>Back</button>
+
+        </div>
+      </form>
+
     </div>
   );
 };
 
-// Use PropTypes to validate the props passed to this component, ensuring reliable behavior.
 Single.propTypes = {
-  // Although 'match' prop is defined here, it is not used in the component.
-  // Consider removing or using it as needed.
   match: PropTypes.object
 };

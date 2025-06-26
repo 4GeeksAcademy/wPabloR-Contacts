@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export const Demo = () => {
  
   const { store, dispatch } = useGlobalReducer()
-  const input = store.newContact;
+  const input = store.emptyContact;
   const navigate = useNavigate()
 
   const handleInput = (e) => {
@@ -34,7 +34,7 @@ const addContact = (e) => {
   .then(data => {
     dispatch({
       type: 'add_contact',
-      payload: {newContact: data}
+      payload: {emptyContact: data}
     });
     navigate("/")
   })
@@ -71,9 +71,6 @@ return (
 
         </div>
       </form>
-      <Link to="/">
-        <button className="btn btn-primary">Back home</button>
-      </Link>
 
     </div>
   );
