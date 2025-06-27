@@ -4,9 +4,9 @@ import {
     Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
+import { ContactList } from "./pages/ContactList";
 import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
+import { AddContact } from "./pages/AddContact";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -14,9 +14,9 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
 
         
-        <Route path= "/" element={<Home />} />
+        <Route path= "/" element={<ContactList />} />
         <Route path="/single/:theId" element={ <Single />} /> 
-        <Route path="/demo" element={<Demo />} />
+        <Route path="/add-contact" element={<AddContact />} />
       </Route>
     )
 );

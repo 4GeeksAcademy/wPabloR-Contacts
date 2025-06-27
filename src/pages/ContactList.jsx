@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+export const ContactList = () => {
 
   const {store, dispatch} =useGlobalReducer()
   const navigate = useNavigate()
@@ -19,8 +19,8 @@ export const Home = () => {
 
   },[])
 
+
   const deleteContact = (id) =>{
-	console.log("borrar contacto");
 	fetch(`https://playground.4geeks.com/contact/agendas/ronaldo/contacts/${id}`, {
 		method: 'DELETE',
 		})

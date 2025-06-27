@@ -1,10 +1,9 @@
 
-import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";  
 import { useNavigate } from "react-router-dom";
 
 
-export const Demo = () => {
+export const AddContact = () => {
  
   const { store, dispatch } = useGlobalReducer()
   const input = store.emptyContact;
@@ -34,7 +33,7 @@ const addContact = (e) => {
   .then(data => {
     dispatch({
       type: 'add_contact',
-      payload: {emptyContact: data}
+      payload: {newContact: data}
     });
     navigate("/")
   })
